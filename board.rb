@@ -48,9 +48,7 @@ class Board
     end
   end
 
-  def reveal(guessed_pos) # input in form "0 0". they want me to pass as an array and make []pos method? input now in form [0, 0]
-    # i, j = guessed_pos[0].to_i, guessed_pos[-1].to_i
-    # guessed_card = @grid[i][j]
+  def reveal(guessed_pos) # input in form[0, 0]
     guessed_card = self[guessed_pos]
     if guessed_card.face_down
       guessed_card.reveal
@@ -71,6 +69,11 @@ class Board
   def [](pos)
     row, col = pos
     @grid[row][col]
+  end
+
+  def []=(pos, value) # if nec
+    row, col = pos
+    @grid[row][col] = value
   end
 
   # debugging methods

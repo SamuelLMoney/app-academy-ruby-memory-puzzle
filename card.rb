@@ -30,7 +30,7 @@ class Card
     @value.to_s # why is this necessary? o i think to make syntax easier for when i call.to_s on a card cuz i'll always want the value, not face_down for that
   end
 
-  # def ==(other_card)
+  # def ==(other_card) # this breaks my sample! method for some reason. maybe ask about this cuz idk why
   #   self.to_s == other_card.to_s
   #   # self.to_s == gets.chomp ?
   # end
