@@ -48,27 +48,29 @@ class Board
     end
   end
 
-  def reveal(guessed_pos) # input in form "0 0"
-    # byebug
-    i, j = guessed_pos[0].to_i, guessed_pos[-1].to_i
-    guessed_card = @grid[i][j]
-    # byebug
+  def reveal(guessed_pos) # input in form "0 0". they want me to pass as an array and make []pos method? input now in form [0, 0]
+    # i, j = guessed_pos[0].to_i, guessed_pos[-1].to_i
+    # guessed_card = @grid[i][j]
+    guessed_card = self[guessed_pos]
     if guessed_card.face_down
-      # byebug
       guessed_card.reveal
       return guessed_card.display
     end
   end
 
-
   # helper methods
 
-  def card_factory(first_half)
+  def card_factory(first_half) # private?
     second_half = []
     first_half.each do |card|
       second_half << Card.new(card.value)
     end
     first_half + second_half
+  end
+
+  def [](pos)
+    row, col = pos
+    @grid[row][col]
   end
 
   # debugging methods
@@ -98,19 +100,25 @@ if __FILE__ == $PROGRAM_NAME
   a.render
   puts "---------"
   puts a.won?
-  a.reveal("0 0")
+  # a.reveal("0 0")
+  # byebug
+  a.reveal([0, 0])
   a.render
   puts "---------"
-  a.reveal("1 1")
+  # a.reveal("1 1")
+  a.reveal([1, 1])
   a.render
   puts "---------"
-  a.reveal("2 2")
+  # a.reveal("2 2")
+  a.reveal([2, 2])
   a.render
   puts "---------"
-  a.reveal("3 3")
+  # a.reveal("3 3")
+  a.reveal([3, 3])
   a.render
   puts "---------"
-  a.reveal("0 3")
+  # a.reveal("0 3")
+  a.reveal([0, 3])
   a.render
   puts "---------"
   a.reveal_all
