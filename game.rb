@@ -1,8 +1,6 @@
 require "byebug"
 require_relative "card"
 require_relative "board"
-require_relative "array_monkey"
-
 
 # Abstraction
 # Encapsulation
@@ -15,33 +13,17 @@ class Game
     @prev_guess = nil
   end
 
-  def play # main method that groups everything else i think
-    # loop until game over
-    # render board
-    # prompt player for input
-    # get guessed_pos
-    # pass pos to a make_guess method
-    # system("clear") before next guess
-    # sleep(n) to show incorrect guess temprorarily
-
+  def play
     @board.populate!
-    count = 0
 
     until self.over?
       @board.render
       guess = get_guess
-      # store_prev_guess(guess)
-      # make_guess(guess)
       initial_guess(guess)
       guess = get_guess
       matching_guess(guess)
+      puts "you win!" if self.over?
       system("clear")
-      count += 1
-      if count == 6
-        @board.reveal_all
-        @board.render
-        sleep(3)
-      end
     end
   end
 
@@ -52,24 +34,6 @@ class Game
 
   def store_prev_guess(guess)
     @prev_guess = @board[guess]
-  end
-
-  def correct_guess?(guess)
-      # guess == @board.reveal(guess)
-      guess == @prev_guess
-  end
-
-  def make_guess(guess)
-    # step = 0
-    # if ?correct_guess?(guess)
-      # @board[guess].
-
-    # else
-    #   sleep(2)
-    #   @board[guess].hide
-    # end
-
-    initial_guess(guess)
   end
 
   def initial_guess(guess)

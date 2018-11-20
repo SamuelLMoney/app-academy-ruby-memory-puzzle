@@ -6,6 +6,8 @@ game = Game.new
 #  enter game playing logic > maybe this means i don't have to make a separate start_game file?
 # end
 
+# just did this in the Game class game.rb
+
 until game.over?
 
 end

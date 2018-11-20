@@ -12,7 +12,6 @@ class Board
 
   def initialize
     @grid = Array.new(4) { Array.new(4) }
-    # @hidden_grid = [] # nec? i don't think so, already storing all data in card object
   end
 
   def populate!
