@@ -12,29 +12,18 @@ class Board
 
   def initialize
     @grid = Array.new(4) { Array.new(4) }
-    @hidden_grid = [] # nec?
+    # @hidden_grid = [] # nec? i don't think so, already storing all data in card object
   end
 
   def populate!
-    # byebug
-    used = []
+    first_half = Array.new(4 * 4 / 2) { Card.new }
+    all = first_half + first_half
 
-    first_half = Array.new(4 * 4 / 2) { Card.new } # remember to require other classes
-    # first_half = Array.new(8) { Card.new }
-    # byebug
     @grid.map! do |row|
       row.map! do |ele|
-        # new_card = rand(1..10)
-        if first_half.empty? # i think works but not truly random. can never get completed pair before going through first_half. actually even worse than that, this way makes 2nd half the same order as first half. bad. this works now but still not pefect randomness.
-          used.sample!
-        else
-          new_card = first_half.sample!
-          used << new_card
-          new_card
-        end
+        all.sample!
       end
     end
-
   end
 
 

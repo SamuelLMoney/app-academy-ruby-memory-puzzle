@@ -4,8 +4,8 @@
 class Card
   attr_reader :face_down, :value
 
-  def initialize
-    @value = rand(1..10)
+  def initialize(value=nil) # not sure if auto nil is necessary anymore
+    @value = value || rand(1..10)
     @face_down = true
   end
 
