@@ -17,7 +17,7 @@ class Board
 
   def populate!
     first_half = Array.new(4 * 4 / 2) { Card.new }
-    all = first_half + first_half
+    all = card_factory(first_half)
 
     @grid.map! do |row|
       row.map! do |ele|
@@ -26,10 +26,7 @@ class Board
     end
   end
 
-
   def render
-    # p @grid # no i need to convert the card objects into an understandable output and take into account faceup/down
-
     @grid.each do |row|
       displayed_row = []
       row.each do |card|
@@ -46,7 +43,7 @@ class Board
   def won?
     @grid.all? do |row|
       row.all? do |card|
-        !card.face_down
+        card.face_up
       end
     end
   end
@@ -64,4 +61,59 @@ class Board
   end
 
 
+  # helper methods
+
+  def card_factory(first_half)
+    second_half = []
+    first_half.each do |card|
+      second_half << Card.new(card.value)
+    end
+    first_half + second_half
+  end
+
+  # debugging methods
+
+  def reveal_all
+    @grid.each do |row|
+      row.each do |card|
+        card.reveal
+      end
+    end
+  end
+
+  def hide_all
+    @grid.each do |row|
+      row.each do |card|
+        card.hide
+      end
+    end
+  end
+
+end
+
+
+if __FILE__ == $PROGRAM_NAME
+  a = Board.new
+  a.populate!
+  a.render
+  puts "---------"
+  puts a.won?
+  a.reveal("0 0")
+  a.render
+  puts "---------"
+  a.reveal("1 1")
+  a.render
+  puts "---------"
+  a.reveal("2 2")
+  a.render
+  puts "---------"
+  a.reveal("3 3")
+  a.render
+  puts "---------"
+  a.reveal("0 3")
+  a.render
+  puts "---------"
+  a.reveal_all
+  a.render
+  puts a.won?
 end
