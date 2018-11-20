@@ -23,6 +23,7 @@ class Game
     # pass pos to a make_guess method
     # system("clear") before next guess
     # sleep(n) to show incorrect guess temprorarily
+
     @board.populate!
 
     until self.over?
@@ -33,7 +34,7 @@ class Game
       initial_guess(guess)
       guess = get_guess
       matching_guess(guess)
-      system("clear")
+      # system("clear")
     end
   end
 
@@ -43,7 +44,7 @@ class Game
   end
 
   def store_prev_guess(guess)
-    @prev_guess = guess
+    @prev_guess = @board[guess]
   end
 
   def correct_guess?(guess)
@@ -67,14 +68,19 @@ class Game
   def initial_guess(guess)
     store_prev_guess(guess)
     @board.reveal(guess)
+    @board.render
   end
 
   def matching_guess(guess)
     @board.reveal(guess)
-    if guess != @prev_guess
+    @board.render
+    if @board[guess].value != @prev_guess.value
+      puts "nope!"
       sleep(2)
-      @board[@prev_guess].hide
+      @prev_guess.hide
       @board[guess].hide
+    else
+      puts "yuppers!"
     end
   end
 
