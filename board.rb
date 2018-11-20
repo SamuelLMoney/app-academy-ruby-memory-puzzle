@@ -1,3 +1,66 @@
+require "byebug"
+require_relative "card"
+require_relative "array_monkey"
+
+# Abstraction
+# Encapsulation
+
 class Board
+  LENGTH = 4 # using constant size for now. can change later. getting a bug with this constant for some reason?
+
+  attr_reader :grid
+
+  def initialize
+    @grid = Array.new(4) { Array.new(4, :N) }
+    @hidden_grid = [] # nec?
+  end
+
+  def populate!
+    # byebug
+    used = []
+
+    first_half = Array.new(4 * 4 / 2) { Card.new } # remember to require other classes
+    # first_half = Array.new(8) { Card.new }
+    # byebug
+    @grid.map! do |sub_arr|
+      sub_arr.map! do |ele|
+        # new_card = rand(1..10)
+        if first_half.empty? # i think works but not truly random. can never get completed pair before going through first_half. actually even worse than that, this way makes 2nd half the same order as first half. bad. this works now but still not pefect randomness.
+          used.sample!
+        else
+          new_card = first_half.sample!
+          used << new_card
+          new_card
+        end
+      end
+    end
+
+  end
+
+
+  def render
+    # p @grid # no i need to convert the card objects into an understandable output and take into account faceup/down
+
+    @grid.each do |sub_arr|
+      displayed_row = []
+      sub_arr.each do |card|
+        if card.face_down
+          displayed_row << "?"
+        else
+          displayed_row << card.value
+        end
+      end
+      p displayed_row
+    end
+  end
+
+  def won?
+
+  end
+
+  def reveal
+
+  end
+
 
 end
