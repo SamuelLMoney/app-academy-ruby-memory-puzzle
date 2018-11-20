@@ -71,10 +71,10 @@ class Board
     @grid[row][col]
   end
 
-  def []=(pos, value) # if nec
-    row, col = pos
-    @grid[row][col] = value
-  end
+  # def []=(pos, value) # if nec
+  #   row, col = pos
+  #   @grid[row][col] = value
+  # end
 
   # debugging methods
 

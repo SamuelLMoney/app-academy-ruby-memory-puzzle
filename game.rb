@@ -25,6 +25,7 @@ class Game
     # sleep(n) to show incorrect guess temprorarily
 
     @board.populate!
+    count = 0
 
     until self.over?
       @board.render
@@ -34,7 +35,13 @@ class Game
       initial_guess(guess)
       guess = get_guess
       matching_guess(guess)
-      # system("clear")
+      system("clear")
+      count += 1
+      if count == 6
+        @board.reveal_all
+        @board.render
+        sleep(3)
+      end
     end
   end
 
@@ -81,6 +88,7 @@ class Game
       @board[guess].hide
     else
       puts "yuppers!"
+      sleep(2)
     end
   end
 
