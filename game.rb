@@ -22,7 +22,10 @@ class Game
       initial_guess(guess)
       guess = get_guess
       matching_guess(guess)
-      puts "you win!" if self.over?
+      if self.over?
+        puts "you win!"
+        sleep(2)
+      end
       system("clear")
     end
   end
@@ -36,13 +39,13 @@ class Game
     @prev_guess = @board[guess]
   end
 
-  def initial_guess(guess)
+  def initial_guess(guess) # pretty sure need to take into account both scenarios noted in #matching_guess
     store_prev_guess(guess)
     @board.reveal(guess)
     @board.render
   end
 
-  def matching_guess(guess)
+  def matching_guess(guess) # bug if i choose an already chosen guess or if i choose a non existent position
     @board.reveal(guess)
     @board.render
     if @board[guess].value != @prev_guess.value
