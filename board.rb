@@ -2,7 +2,7 @@ require "byebug"
 require_relative "card"
 require_relative "array_monkey"
 
-# good, but come back to reveal refactor and possible private methods
+# good, but come back to possible private methods
 
 # Abstraction
 # Encapsulation
@@ -56,6 +56,16 @@ class Board
     end
   end
 
+  def currently_revealed
+    face_up_indices = []
+    @grid.each_with_index do |row, i|
+      row.each_with_index do |card, j|
+        face_up_indices << [i, j] if card.face_up
+      end
+    end
+    face_up_indices
+  end
+
   # helper methods
 
   def card_factory(first_half) # private? i think so, it should never be called anywhere but this class
@@ -107,6 +117,8 @@ if __FILE__ == $PROGRAM_NAME
   # byebug
   a.reveal([0, 0])
   a.render
+  # byebug
+  p a.currently_revealed
   puts "---------"
   # a.reveal("1 1")
   a.reveal([1, 1])
@@ -119,6 +131,7 @@ if __FILE__ == $PROGRAM_NAME
   # a.reveal("3 3")
   a.reveal([3, 3])
   a.render
+  p a.currently_revealed
   puts "---------"
   # a.reveal("0 3")
   a.reveal([0, 3])

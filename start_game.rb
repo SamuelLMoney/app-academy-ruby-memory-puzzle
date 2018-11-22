@@ -1,3 +1,5 @@
+# no longer using file
+
 game = Game.new
 
 
