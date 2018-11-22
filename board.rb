@@ -52,8 +52,7 @@ class Board
   def reveal(guessed_pos) # input in form[0, 0]
     guessed_card = self[guessed_pos]
     if guessed_card.face_down
-      guessed_card.reveal
-      return guessed_card.display # pretty sure i can simply return guessed_card.reveal
+      return guessed_card.reveal
     end
   end
 

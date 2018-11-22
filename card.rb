@@ -11,7 +11,7 @@ class Card
     @face_down = true
   end
 
-  def display # private? private is to let developer know that method should only be called inside its class. it's not going to be used with public interface and won't be "traveling" to other classes.
+  def display # private? private is to let developer know that method should only be called inside its class. it's not going to be used with public interface and won't be "traveling" to other classes. and yeah i think this one private, why would i ever display a card without making it face up?
     return @value unless @face_down
   end
 
