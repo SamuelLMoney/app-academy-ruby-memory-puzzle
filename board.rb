@@ -2,6 +2,8 @@ require "byebug"
 require_relative "card"
 require_relative "array_monkey"
 
+# good, but come back to reveal refactor and possible private methods
+
 # Abstraction
 # Encapsulation
 
@@ -51,13 +53,13 @@ class Board
     guessed_card = self[guessed_pos]
     if guessed_card.face_down
       guessed_card.reveal
-      return guessed_card.display
+      return guessed_card.display # pretty sure i can simply return guessed_card.reveal
     end
   end
 
   # helper methods
 
-  def card_factory(first_half) # private?
+  def card_factory(first_half) # private? i think so, it should never be called anywhere but this class
     second_half = []
     first_half.each do |card|
       second_half << Card.new(card.value)
@@ -85,7 +87,7 @@ class Board
     end
   end
 
-  def hide_all
+  def hide_all # power of making method names/variables uber readable/idiomatic = i/someone else can look at my code and very quickly determine what's going on. reduces complexity, cognitive overhead
     @grid.each do |row|
       row.each do |card|
         card.hide

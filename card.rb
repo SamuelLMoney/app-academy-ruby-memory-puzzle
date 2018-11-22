@@ -1,6 +1,8 @@
 # Abstraction
 # Encapsulation
 
+# good, come back to possible private methods, and questions post
+
 class Card
   attr_reader :face_down, :value
 
@@ -9,7 +11,7 @@ class Card
     @face_down = true
   end
 
-  def display # private?
+  def display # private? private is to let developer know that method should only be called inside its class. it's not going to be used with public interface and won't be "traveling" to other classes.
     return @value unless @face_down
   end
 

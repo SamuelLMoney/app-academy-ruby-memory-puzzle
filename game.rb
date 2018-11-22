@@ -13,7 +13,7 @@ class Game
     @prev_guess = nil
   end
 
-  def play
+  def play # maybe make this a bit shorter and export to helpers
     @board.populate!
 
     until self.over?
@@ -32,7 +32,7 @@ class Game
 
   def get_guess
     puts "please make a guess in the form 0 0"
-    gets.chomp.split.map(&:to_i) # keep in string form? maybe keep in string form since Card.to_s method
+    gets.chomp.split.map(&:to_i) # keep in string form? maybe keep in string form since Card.to_s method. didn't do that.
   end
 
   def store_prev_guess(guess)
