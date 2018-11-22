@@ -2,14 +2,16 @@ require "byebug"
 require_relative "card"
 require_relative "board"
 require_relative "human_player"
+require_relative "computer_player"
 
 class Game
   attr_reader :board, :prev_guess
 
-  def initialize(human_player)
+  def initialize(human_player, computer_player)
     @board = Board.new
     @board.populate!
     @human_player = human_player
+    @computer_player = computer_player
     @prev_guess = nil
     @currently_revealed = nil
   end
@@ -99,6 +101,7 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   h = HumanPlayer.new
-  a = Game.new(h)
+  c = ComputerPlayer.new
+  a = Game.new(h, c)
   a.play
 end
