@@ -1,11 +1,9 @@
+require "set"
 require "byebug"
 require_relative "card"
 require_relative "array_monkey"
 
-# good, but come back to possible private methods
-
-# Abstraction
-# Encapsulation
+# good, but come back to possible constant refactoring
 
 class Board
   LENGTH = 4 # using constant size for now. can change later. getting a bug with this constant for some reason?
@@ -57,24 +55,16 @@ class Board
   end
 
   def currently_revealed
-    face_up_indices = [] # i think could optimize this to be a hash/set for faster look up. not really relevant at normal game sizes
+    face_up_indices = Set[]
     @grid.each_with_index do |row, i|
       row.each_with_index do |card, j|
-        face_up_indices << [i, j] if card.face_up
+        face_up_indices.add([i, j]) if card.face_up
       end
     end
     face_up_indices
   end
 
   # helper methods
-
-  def card_factory(first_half) # private? i think so, it should never be called anywhere but this class
-    second_half = []
-    first_half.each do |card|
-      second_half << Card.new(card.value)
-    end
-    first_half + second_half
-  end
 
   def [](pos)
     row, col = pos
@@ -102,6 +92,16 @@ class Board
         card.hide
       end
     end
+  end
+
+  private
+
+  def card_factory(first_half)
+    second_half = []
+    first_half.each do |card|
+      second_half << Card.new(card.value)
+    end
+    first_half + second_half
   end
 
 end
