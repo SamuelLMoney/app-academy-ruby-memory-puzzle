@@ -1,15 +1,19 @@
 require "byebug"
 require_relative "card"
 require_relative "board"
+require_relative "human_player"
 
 # Abstraction
 # Encapsulation
 
+# seems to be working at the moment if i make all valid moves. immediately breaks if i make an invalid move. wtf lol
+# it's taking my most recent missed guess and circling back to try that. is it processing recursively? no it's just finishing the original method that never ended...
 class Game
   attr_reader :board, :prev_guess
 
-  def initialize
+  def initialize(human_player)
     @board = Board.new
+    @human_player = human_player
     @prev_guess = nil
     @currently_revealed = nil
   end
@@ -19,22 +23,12 @@ class Game
 
     until self.over?
       @board.render
-      guess = get_guess
-      initial_guess(guess)
-      guess = get_guess
-      matching_guess(guess)
+      # guess = get_guess
+      initial_guess
+      # guess = get_guess
+      matching_guess
       system("clear")
     end
-  end
-
-  def get_guess
-    puts "please make a guess in the form 0 0"
-    guess = gets.chomp.split.map(&:to_i)
-    if valid?(guess)
-      return guess
-    end
-    puts "that's not a valid guess..."
-    get_guess
   end
 
   def valid?(guess) # could further optimize by taking into account guesses not in the form "0 0" but will leave like this for now
@@ -51,20 +45,57 @@ class Game
     @prev_guess = @board[guess]
   end
 
-  def initial_guess(guess)
+  def initial_guess
+    # if human player
+    #byebug
+    guess = @human_player.get_guess # might not even need this line now. actually still need to initialize guess although it might work with it as nil at first. might get an error when checking nil with valid? tho
+    # unless valid?(guess)
+    until valid?(guess)
+      puts "that's not a valid guess..."
+      guess = @human_player.get_guess
+    end
+
+    # if valid?(guess) == false
+    #   puts "that's not a valid guess..."
+    #   initial_guess # o wow that's pretty nuts. i never returned/break or anything so yeah it runs initial_guess again but it still needs to finish the rest of the original method. wow that was a mind blow.
+    # end
+    #byebug
+
+    # if valid?(guess)
+    #   return guess
+    # end
+    # puts "that's not a valid guess..."
+    # get_guess
+
     store_prev_guess(guess)
     @board.reveal(guess)
     @board.render
+    #byebug
   end
 
-  def matching_guess(guess)
+  def matching_guess
+    #byebug
+    guess = @human_player.get_guess
+
+    until valid?(guess)
+      puts "that's not a valid guess..."
+      guess = @human_player.get_guess
+    end
+    # unless valid?(guess)
+    # if valid?(guess) == false
+    #   puts "that's not a valid guess..."
+    #   matching_guess
+    # end
+    #byebug
     @board.reveal(guess)
     @board.render
+    #byebug
     if @board[guess].value != @prev_guess.value
       puts "nope!"
       sleep(2)
       @prev_guess.hide
       @board[guess].hide
+      #byebug
     else
       puts "yuppers!"
       sleep(2)
@@ -72,6 +103,7 @@ class Game
         puts "you win!"
         sleep(2)
       end
+      #byebug
     end
   end
 
@@ -83,6 +115,7 @@ end
 
 
 if __FILE__ == $PROGRAM_NAME
-  a = Game.new
+  h = HumanPlayer.new
+  a = Game.new(h)
   a.play
 end

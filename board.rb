@@ -57,7 +57,7 @@ class Board
   end
 
   def currently_revealed
-    face_up_indices = []
+    face_up_indices = [] # i think could optimize this to be a hash/set for faster look up. not really relevant at normal game sizes
     @grid.each_with_index do |row, i|
       row.each_with_index do |card, j|
         face_up_indices << [i, j] if card.face_up
