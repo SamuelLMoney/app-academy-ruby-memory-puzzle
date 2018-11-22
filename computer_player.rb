@@ -6,14 +6,9 @@ class ComputerPlayer
   attr_reader :known_cards, :matched_cards
 
   def initialize
-    # @memory = nil
     @known_cards = {}
     @matched_cards = Set[]
   end
-
-  # def update_memory
-  #
-  # end
 
   def receive_revealed_card(pos, value)
     @known_cards[pos] = value
@@ -24,19 +19,33 @@ class ComputerPlayer
   end
 
   def make_guess
-    get_first_match if knows_match?
+    return get_first_match if knows_match?
+    # else do a random guess with a card it hasn't seen
   end
 
-  def knows_match?
+  def knows_match? # p
     @known_cards.values.uniq != @known_cards.values
   end
 
-  def get_first_match
+  def get_first_matching_value
     count = get_count
-    matching_value = nil
-    count.each do |value, num|
-      
+    count.each do |value, times_seen|
+      if times_seen > 1
+        return value
+      end
     end
+  end
+
+  def get_first_match # will return in form [[0, 0], [1, 1]]
+    first_matching_value = get_first_matching_value
+    first_match = []
+    # until first_match.length == 2
+      @known_cards.each do |pos, value|
+        first_match << pos if value == first_matching_value
+        return first_match if first_match.length == 2
+      end
+    # end
+
   end
 
   def get_count
@@ -48,7 +57,7 @@ class ComputerPlayer
   end
 
   def set_count # debugging
-    @known_cards = { [0, 0] => 1, [0, 1] => 8, [3, 3] => 4, [1, 2] => 1 }
+    @known_cards = { [0, 0] => 1, [0, 1] => 8, [3, 3] => 4, [1, 2] => 2, [2, 2] => 8 }
   end
 
 end
