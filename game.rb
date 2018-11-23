@@ -7,11 +7,15 @@ require_relative "computer_player"
 class Game
   attr_reader :board, :prev_guess
 
-  def initialize(human_player, computer_player)
+  def initialize(player)
     @board = Board.new
     @board.populate!
-    @human_player = human_player
-    @computer_player = computer_player
+
+    # @human_player = human_player
+    # @computer_player = computer_player
+
+    @player = player
+
     @prev_guess = nil
     @prev_guess_pos = nil
     @currently_revealed = nil
@@ -24,8 +28,8 @@ class Game
       matching_guess
       # byebug
       system("clear")
-      p @computer_player.known_cards
-      p @computer_player.matched_cards
+      p @player.known_cards
+      p @player.matched_cards
     end
   end
 
@@ -69,15 +73,15 @@ class Game
 
   def try_guess_and_show(guess)
     @board.reveal(guess)
-    @computer_player.receive_revealed_card(guess, @board[guess].value)
+    @player.receive_revealed_card(guess, @board[guess].value)
     @board.render
   end
 
   def get_guess_and_validate
-    guess = @human_player.get_guess
+    guess = @player.get_guess
     until valid?(guess)
       puts "that's not a valid guess..."
-      guess = @human_player.get_guess
+      guess = @player.get_guess
     end
     guess
   end
@@ -85,7 +89,7 @@ class Game
   def correct_match(guess)
     puts "yuppers!"
     sleep(2)
-    @computer_player.receive_match(guess, @prev_guess_pos)
+    @player.receive_match(guess, @prev_guess_pos)
     if over?
       puts "you win!"
       sleep(2)
@@ -109,6 +113,8 @@ end
 if __FILE__ == $PROGRAM_NAME
   h = HumanPlayer.new
   bot = ComputerPlayer.new
-  g = Game.new(h, bot)
+  # pass in only 1 at a time?
+  g = Game.new(h)
+  # g = Game.new(bot)
   g.play
 end

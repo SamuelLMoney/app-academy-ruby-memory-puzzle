@@ -2,6 +2,8 @@ require "byebug"
 require "set"
 # require_relative "board" # it can interact with board/game by passing values from those classes to here rather than requiring them and accessing values directly. think it's better for flow to only be one way for safety.
 
+# ok the computer is now getting the relevant data but now it needs to actually make guesses itself
+
 class ComputerPlayer
   attr_reader :known_cards, :matched_cards
 
@@ -23,7 +25,11 @@ class ComputerPlayer
 
   # make 2 separate methods for initial and matching guess?
 
-  def make_guess
+  def initial_guess
+
+  end
+
+  def get_guess # use the same method name so no matter if it's passed a human or bot it'll work
     return get_first_match if knows_match?
     # else do a random guess with a card it hasn't seen
   end
