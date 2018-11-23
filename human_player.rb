@@ -4,7 +4,12 @@ require "byebug"
 class HumanPlayer
   attr_reader :known_cards, :matched_cards
 
-  def get_guess
+  def get_first_guess
+    puts "please make a guess in the form 0 0"
+    gets.chomp.split.map(&:to_i)
+  end
+
+  def get_matching_guess
     puts "please make a guess in the form 0 0"
     gets.chomp.split.map(&:to_i)
   end

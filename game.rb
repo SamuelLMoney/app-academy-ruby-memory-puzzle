@@ -25,6 +25,7 @@ class Game
     until self.over?
       @board.render
       initial_guess
+      # sleep(2)
       matching_guess
       # byebug
       system("clear")
@@ -50,13 +51,13 @@ class Game
 
   def initial_guess
     # if human player
-    guess = get_guess_and_validate
+    guess = get_first_guess_and_validate
     store_prev_guess(guess)
     try_guess_and_show(guess)
   end
 
   def matching_guess
-    guess = get_guess_and_validate
+    guess = get_matching_guess_and_validate
     try_guess_and_show(guess)
     if match?(guess)
       correct_match(guess)
@@ -77,11 +78,20 @@ class Game
     @board.render
   end
 
-  def get_guess_and_validate
-    guess = @player.get_guess
+  def get_first_guess_and_validate
+    guess = @player.get_first_guess # make 2 separate methods here so i can differentiate between 1st and 2nd guess?
     until valid?(guess)
       puts "that's not a valid guess..."
-      guess = @player.get_guess
+      guess = @player.get_first_guess
+    end
+    guess
+  end
+
+  def get_matching_guess_and_validate
+    guess = @player.get_matching_guess # make 2 separate methods here so i can differentiate between 1st and 2nd guess?
+    until valid?(guess)
+      puts "that's not a valid guess..."
+      guess = @player.get_matching_guess
     end
     guess
   end
@@ -114,7 +124,7 @@ if __FILE__ == $PROGRAM_NAME
   h = HumanPlayer.new
   bot = ComputerPlayer.new
   # pass in only 1 at a time?
-  g = Game.new(h)
-  # g = Game.new(bot)
+  # g = Game.new(h)
+  g = Game.new(bot)
   g.play
 end
