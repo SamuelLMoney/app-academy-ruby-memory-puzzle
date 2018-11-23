@@ -15,6 +15,7 @@ class ComputerPlayer
     @initial_guess = nil
     @matching_guess = nil
     @tries = 0
+    @last_guess = nil
   end
 
   def receive_revealed_card(pos, value)
@@ -46,7 +47,9 @@ class ComputerPlayer
       return @initial_guess
     end
     # else do a random guess with a card it hasn't seen
+    # correct by holding @last_guess and checking if they're the same?
     guess = random_guess
+    @last_guess = guess
     p guess
     sleep(1)
     guess
@@ -57,17 +60,20 @@ class ComputerPlayer
     sleep(1)
 
     if knows_match?
-      get_first_match # i think this will improve it but still buggy
-      @tries += 1
-      p @matching_guess unless @tries > 1
-      sleep(1) unless @tries > 1
-      return @matching_guess unless @tries > 1
-      # get_first_match
-      # return @matching_guess unless @tries > 1
-      p @initial_guess
-      sleep(1)
-      @tries = 0
+      get_first_match
+      return @matching_guess unless @matching_guess == @last_guess
       return @initial_guess
+      # get_first_match # i think this will improve it but still buggy
+      # @tries += 1
+      # p @matching_guess unless @tries > 1
+      # sleep(1) unless @tries > 1
+      # return @matching_guess unless @tries > 1
+      # # get_first_match
+      # # return @matching_guess unless @tries > 1
+      # p @initial_guess
+      # sleep(1)
+      # @tries = 0
+      # return @initial_guess
     end
 
     guess = random_guess
