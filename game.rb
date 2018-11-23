@@ -25,6 +25,8 @@ class Game
     until self.over?
       @board.render
       initial_guess
+      p @player.known_cards
+      p @player.matched_cards
       # sleep(2)
       matching_guess
       # byebug
@@ -125,6 +127,6 @@ if __FILE__ == $PROGRAM_NAME
   bot = ComputerPlayer.new
   # pass in only 1 at a time?
   # g = Game.new(h)
-  g = Game.new(bot)
+  g = Game.new(bot) # same exact code, just initialized with a human or a bot and can do either one, cool
   g.play
 end

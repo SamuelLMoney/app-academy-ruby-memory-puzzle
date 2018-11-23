@@ -4,6 +4,8 @@ require "set"
 
 # ok the computer is now getting the relevant data but now it needs to actually make guesses itself
 
+# yeah it fucks up when it reveals the pair on the initial guess. it keeps breaking every time i complete the pair on the initial guess
+
 class ComputerPlayer
   attr_reader :known_cards, :matched_cards
 
@@ -12,6 +14,7 @@ class ComputerPlayer
     @matched_cards = Set[] # unpair elements? i guess it doesn't matter if they're together, just that they've been matched
     @initial_guess = nil
     @matching_guess = nil
+    @tries = 0
   end
 
   def receive_revealed_card(pos, value)
@@ -38,14 +41,14 @@ class ComputerPlayer
 
     if knows_match?
       get_first_match
-      puts @initial_guess
-      sleep(2)
+      p @initial_guess
+      sleep(1)
       return @initial_guess
     end
     # else do a random guess with a card it hasn't seen
     guess = random_guess
-    puts guess
-    sleep(2)
+    p guess
+    sleep(1)
     guess
   end
 
@@ -54,14 +57,22 @@ class ComputerPlayer
     sleep(1)
 
     if knows_match?
-      puts @matching_guess
-      sleep(2)
-      return @matching_guess
+      get_first_match # i think this will improve it but still buggy
+      @tries += 1
+      p @matching_guess unless @tries > 1
+      sleep(1) unless @tries > 1
+      return @matching_guess unless @tries > 1
+      # get_first_match
+      # return @matching_guess unless @tries > 1
+      p @initial_guess
+      sleep(1)
+      @tries = 0
+      return @initial_guess
     end
 
     guess = random_guess
-    puts guess
-    sleep(2)
+    p guess
+    sleep(1)
     guess
   end
 
