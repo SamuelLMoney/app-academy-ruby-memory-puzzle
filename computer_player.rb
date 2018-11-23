@@ -16,6 +16,9 @@ class ComputerPlayer
 
   def receive_match(pos1, pos2)
     @matched_cards.add([pos1, pos2])
+    # then remove those cards from known cards i think
+    @known_cards.delete(pos1)
+    @known_cards.delete(pos2)
   end
 
   # make 2 separate methods for initial and matching guess?

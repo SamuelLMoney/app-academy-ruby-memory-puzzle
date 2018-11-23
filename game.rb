@@ -13,6 +13,7 @@ class Game
     @human_player = human_player
     @computer_player = computer_player
     @prev_guess = nil
+    @prev_guess_pos = nil
     @currently_revealed = nil
   end
 
@@ -24,6 +25,7 @@ class Game
       # byebug
       system("clear")
       p @computer_player.known_cards
+      p @computer_player.matched_cards
     end
   end
 
@@ -39,6 +41,7 @@ class Game
 
   def store_prev_guess(guess)
     @prev_guess = @board[guess]
+    @prev_guess_pos = guess
   end
 
   def initial_guess
@@ -52,7 +55,7 @@ class Game
     guess = get_guess_and_validate
     try_guess_and_show(guess)
     if match?(guess)
-      correct_match
+      correct_match(guess)
     else
       incorrect_match(guess)
     end
@@ -79,9 +82,10 @@ class Game
     guess
   end
 
-  def correct_match
+  def correct_match(guess)
     puts "yuppers!"
     sleep(2)
+    @computer_player.receive_match(guess, @prev_guess_pos)
     if over?
       puts "you win!"
       sleep(2)
@@ -105,6 +109,6 @@ end
 if __FILE__ == $PROGRAM_NAME
   h = HumanPlayer.new
   bot = ComputerPlayer.new
-  a = Game.new(h, bot)
-  a.play
+  g = Game.new(h, bot)
+  g.play
 end
