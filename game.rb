@@ -21,7 +21,9 @@ class Game
       @board.render
       initial_guess
       matching_guess
+      # byebug
       system("clear")
+      p @computer_player.known_cards
     end
   end
 
@@ -64,6 +66,7 @@ class Game
 
   def try_guess_and_show(guess)
     @board.reveal(guess)
+    @computer_player.receive_revealed_card(guess, @board[guess].value)
     @board.render
   end
 
@@ -101,7 +104,7 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   h = HumanPlayer.new
-  c = ComputerPlayer.new
-  a = Game.new(h, c)
+  bot = ComputerPlayer.new
+  a = Game.new(h, bot)
   a.play
 end

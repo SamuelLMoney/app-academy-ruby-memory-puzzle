@@ -21,6 +21,16 @@ class Card
     !@face_down
   end
 
+  private
+
+  def display
+    return @value unless @face_down
+  end
+
+end
+
+
+
   # def to_s
   #   @value.to_s # why is this necessary? o i think to make syntax easier for when i call.to_s on a card cuz i'll always want the value, not face_down for that
   # end
@@ -29,11 +39,3 @@ class Card
   #   self.value == other_card.value
   #   # self.to_s == gets.chomp ?
   # end
-
-  private
-
-  def display
-    return @value unless @face_down
-  end
-
-end

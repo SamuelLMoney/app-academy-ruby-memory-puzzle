@@ -15,8 +15,10 @@ class ComputerPlayer
   end
 
   def receive_match(pos1, pos2)
-    @matched_cards.add(pos1, pos2)
+    @matched_cards.add([pos1, pos2])
   end
+
+  # make 2 separate methods for initial and matching guess?
 
   def make_guess
     return get_first_match if knows_match?
