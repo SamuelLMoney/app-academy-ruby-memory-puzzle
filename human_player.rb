@@ -1,5 +1,6 @@
 require "byebug"
-# require "set"
+
+# this class is mostly "dummy" methods for duck typing
 
 class HumanPlayer
   attr_reader :known_cards, :matched_cards

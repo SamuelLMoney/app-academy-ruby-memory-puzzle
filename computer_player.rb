@@ -2,16 +2,13 @@ require "byebug"
 require "set"
 # require_relative "board" # it can interact with board/game by passing values from those classes to here rather than requiring them and accessing values directly. think it's better for flow to only be one way for safety.
 
-# ok the computer is now getting the relevant data but now it needs to actually make guesses itself
-
-# yeah it fucks up when it reveals the pair on the initial guess. it keeps breaking every time i complete the pair on the initial guess
 
 class ComputerPlayer
   attr_reader :known_cards, :matched_cards
 
   def initialize
     @known_cards = {}
-    @matched_cards = Set[] # unpair elements? i guess it doesn't matter if they're together, just that they've been matched
+    @matched_cards = Set[]
     @initial_guess = nil
     @matching_guess = nil
     @tries = 0
@@ -24,17 +21,11 @@ class ComputerPlayer
 
   def receive_match(pos1, pos2)
     @matched_cards.add(pos1)
-    @matched_cards.add(pos2) # works individually?
-    # then remove those cards from known cards i think
+    @matched_cards.add(pos2)
+    # then remove those cards from known cards
     @known_cards.delete(pos1)
     @known_cards.delete(pos2)
   end
-
-  # make 2 separate methods for initial and matching guess?
-
-  # def initial_guess
-  #
-  # end
 
   def get_first_guess # use the same method name so no matter if it's passed a human or bot it'll work
     puts "please make a guess in the form 0 0"
@@ -47,7 +38,6 @@ class ComputerPlayer
       return @initial_guess
     end
     # else do a random guess with a card it hasn't seen
-    # correct by holding @last_guess and checking if they're the same?
     guess = random_guess
     @last_guess = guess
     p guess
@@ -61,19 +51,16 @@ class ComputerPlayer
 
     if knows_match?
       get_first_match
-      return @matching_guess unless @matching_guess == @last_guess
+
+      unless @matching_guess == @last_guess
+        p @matching_guess
+        sleep(1)
+        return @matching_guess
+      end
+
+      p @initial_guess
+      sleep(1)
       return @initial_guess
-      # get_first_match # i think this will improve it but still buggy
-      # @tries += 1
-      # p @matching_guess unless @tries > 1
-      # sleep(1) unless @tries > 1
-      # return @matching_guess unless @tries > 1
-      # # get_first_match
-      # # return @matching_guess unless @tries > 1
-      # p @initial_guess
-      # sleep(1)
-      # @tries = 0
-      # return @initial_guess
     end
 
     guess = random_guess
@@ -90,11 +77,11 @@ class ComputerPlayer
     guess
   end
 
-  def not_yet_seen?(guess) # p
+  def not_yet_seen?(guess) # priv
     !@known_cards.key?(guess) && !@matched_cards.include?(guess)
   end
 
-  def knows_match? # p
+  def knows_match? # priv
     @known_cards.values.uniq != @known_cards.values
   end
 
@@ -110,18 +97,14 @@ class ComputerPlayer
   def get_first_match # will return in form [[0, 0], [1, 1]]. first match pos 1?
     first_matching_value = get_first_matching_value
     first_match = []
-    # until first_match.length == 2
-      @known_cards.each do |pos, value|
-        first_match << pos if value == first_matching_value
-        # return first_match if first_match.length == 2
-        if first_match.length == 2
-          @initial_guess = first_match.first
-          @matching_guess = first_match.last
-          break # ?
-        end
+    @known_cards.each do |pos, value|
+      first_match << pos if value == first_matching_value
+      if first_match.length == 2
+        @initial_guess = first_match.first
+        @matching_guess = first_match.last
+        break # ?
       end
-    # end
-
+    end
   end
 
   def get_count

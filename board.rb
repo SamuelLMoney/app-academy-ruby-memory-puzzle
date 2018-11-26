@@ -6,7 +6,7 @@ require_relative "array_monkey"
 # good, but come back to possible constant refactoring
 
 class Board
-  LENGTH = 4 # using constant size for now. can change later. getting a bug with this constant for some reason?
+  LENGTH = 4 # using constant size for now. can change later..getting a bug with this constant for some reason?
 
   attr_reader :grid
 
